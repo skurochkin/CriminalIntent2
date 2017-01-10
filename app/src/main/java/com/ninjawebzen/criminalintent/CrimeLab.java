@@ -15,8 +15,8 @@ public class CrimeLab {
     private static CrimeLab sCrimeLab;
     private List<Crime> mCrimes;
 
-    public static CrimeLab get(Context context){
-        if(sCrimeLab == null){
+    public static CrimeLab get(Context context) {
+        if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);
         }
         return sCrimeLab;
@@ -24,21 +24,19 @@ public class CrimeLab {
 
     private CrimeLab(Context context){
         mCrimes = new ArrayList<>();
-        for (int i = 0; i < 100; i++){
-            Crime crime = new Crime();
-            crime.setmTitle("Crime #" + i);
-            crime.setmSolved(i%2 == 0); // Every other one
-            mCrimes.add(crime);
-        }
     }
 
-    public List<Crime> getCrimes(){
+    public void addCrime(Crime c){
+        mCrimes.add(c);
+    }
+
+    public List<Crime> getCrimes() {
         return mCrimes;
     }
 
-    public Crime getCrime(UUID id){
-        for(Crime crime : mCrimes){
-            if (crime.getmId().equals(id)){
+    public Crime getCrime(UUID id) {
+        for (Crime crime : mCrimes) {
+            if (crime.getmId().equals(id)) {
                 return crime;
             }
         }
