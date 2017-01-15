@@ -31,6 +31,7 @@ public class CrimeLab {
         mContext = context.getApplicationContext();
         mDatabase = new CrimeBaseHelper(mContext)
                 .getWritableDatabase();
+
     }
 
     public void addCrime(Crime c){
@@ -40,40 +41,43 @@ public class CrimeLab {
 
     public List<Crime> getCrimes() {
         List<Crime> crimes = new ArrayList<>();
-
-        CrimeCursorWrapper cursor = queryCrimes(null, null);
-
-        try{
+        CrimeCursorWrapper cursor = queryCrimes(null,
+                null);
+        try {
             cursor.moveToFirst();
-            while (!cursor.moveToFirst()){
-            crimes.add(cursor.getCrime());
-            cursor.moveToNext();
-        }
-    }finally {
-     cursor.close();
+            while (!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
         return crimes;
     }
 
-    private static ContentValues getContentValues(Crime crime){
+    private static ContentValues
+    getContentValues(Crime crime) {
         ContentValues values = new ContentValues();
-        values.put(CrimeDbSchema.CrimeTable.Cols.UUID, crime.getmId().toString());
-        values.put(CrimeDbSchema.CrimeTable.Cols.TITLE, crime.getmTitle());
-        values.put(CrimeDbSchema.CrimeTable.Cols.DATE, crime.getmDate().getTime());
-        values.put(CrimeDbSchema.CrimeTable.Cols.SOLVED, crime.ismSolved() ? 1 : 0);
-
+        values.put(CrimeDbSchema.CrimeTable.Cols.UUID,
+                crime.getmId().toString());
+        values.put(CrimeDbSchema.CrimeTable.Cols.TITLE,
+                crime.getmTitle());
+        values.put(CrimeDbSchema.CrimeTable.Cols.DATE,
+                crime.getmDate().getTime());
+        values.put(CrimeDbSchema.CrimeTable.Cols.SOLVED,
+                crime.ismSolved() ? 1 : 0);
         return values;
     }
-
-    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs){
+    private CrimeCursorWrapper queryCrimes(String
+                                                   whereClause, String[] whereArgs) {
         Cursor cursor = mDatabase.query(
                 CrimeDbSchema.CrimeTable.NAME,
-                null,
+                null, // Columns - null selects all columns
                 whereClause,
                 whereArgs,
-                null,
-                null,
-                null
+                null, // groupBy
+                null, // having
+                null // orderBy
         );
         return new CrimeCursorWrapper(cursor);
     }
@@ -82,27 +86,24 @@ public class CrimeLab {
 
         CrimeCursorWrapper cursor = queryCrimes(
                 CrimeDbSchema.CrimeTable.Cols.UUID + " = ?",
-                new String[] {id.toString()}
+                new String[] { id.toString() }
         );
-
-        try{
-            if(cursor.getCount() == 0){
+        try {
+            if (cursor.getCount() == 0) {
                 return null;
             }
-
             cursor.moveToFirst();
             return cursor.getCrime();
-        }finally {
+        } finally {
             cursor.close();
         }
     }
 
-    public void updateCrime(Crime crime){
+    public void updateCrime(Crime crime) {
         String uuidString = crime.getmId().toString();
         ContentValues values = getContentValues(crime);
-
         mDatabase.update(CrimeDbSchema.CrimeTable.NAME, values,
                 CrimeDbSchema.CrimeTable.Cols.UUID + " = ?",
-                new String[]{uuidString});
+                new String[] { uuidString });
     }
 }
