@@ -14,6 +14,20 @@ public class Crime {
     private Date mDate;
     private boolean mSolved;
 
+    public String getmSuspect() {
+        return mSuspect;
+    }
+
+    public void setmSuspect(String suspect) {
+        mSuspect = suspect;
+    }
+
+    public String getPhotoFilename(){
+        return "IMG_" + getmId().toString() + ".jpg";
+    }
+
+    private String mSuspect;
+
     public Date getmDate() {
         return mDate;
     }
