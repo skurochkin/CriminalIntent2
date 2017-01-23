@@ -2,4 +2,4 @@
 
 It is an Android application which allow you to record violations at home or office.
 
-<img src= "https://cloud.githubusercontent.com/assets/3438468/22222174/e0312bb6-e183-11e6-82d2-00c894619947.png" { height 146px; width: 71px; }/>
+<img src= "https://cloud.githubusercontent.com/assets/3438468/22222174/e0312bb6-e183-11e6-82d2-00c894619947.png" { width: 71px; }/>
